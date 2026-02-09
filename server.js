@@ -235,6 +235,58 @@ function isProcessAlive(pid) {
   }
 }
 
+/**
+ * Poll tmux pane until Claude Code is ready for input (showing prompt).
+ * Returns true if ready, false if timed out.
+ */
+async function waitForClaudeReady(sessionName, timeoutMs = 30000) {
+  const pollInterval = 500;
+  const maxAttempts = Math.ceil(timeoutMs / pollInterval);
+
+  for (let i = 0; i < maxAttempts; i++) {
+    await new Promise(r => setTimeout(r, pollInterval));
+
+    const rawOutput = capturePaneOutput(sessionName, 30);
+    const output = stripAnsi(rawOutput);
+    const lines = output.split('\n').filter(l => l.trim() !== '');
+    if (lines.length === 0) continue;
+
+    const recentText = lines.slice(-8).map(l => l.trim()).join('\n');
+
+    // Detect the bypass-permissions trust prompt and accept it
+    if (/Yes, I accept/i.test(recentText) && /No, exit/i.test(recentText)) {
+      console.log(`[SPAWN] Trust prompt detected for ${sessionName}, accepting...`);
+      try {
+        // Press Down to select "Yes, I accept", then Enter to confirm
+        execSync(`tmux send-keys -t ${sessionName} Down`, { encoding: 'utf-8', timeout: 3000 });
+        await new Promise(r => setTimeout(r, 200));
+        execSync(`tmux send-keys -t ${sessionName} Enter`, { encoding: 'utf-8', timeout: 3000 });
+      } catch (e) {
+        console.log(`[SPAWN] Failed to accept trust prompt for ${sessionName}: ${e.message}`);
+      }
+      // Continue polling — Claude still needs to finish loading after accepting
+      continue;
+    }
+
+    // If Claude is actively running a task, it's past the trust prompt
+    if (/esc to interrupt/i.test(recentText)) return true;
+
+    // Check if Claude is showing its input prompt (ready for input)
+    const lastLine = lines[lines.length - 1].trim();
+    if (/^>\s*$/.test(lastLine) || /^❯\s*$/.test(lastLine) || /^❯\s+\S/.test(lastLine)) {
+      return true;
+    }
+
+    // Also ready if showing common idle signals
+    if (/what.*would.*like/i.test(recentText) || /can i help/i.test(recentText)) {
+      return true;
+    }
+  }
+
+  console.log(`[SPAWN] waitForClaudeReady timed out for ${sessionName} after ${timeoutMs}ms`);
+  return false;
+}
+
 async function spawnAgent(projectPath, prompt) {
   // Expand ~ to home directory
   if (projectPath.startsWith('~')) {
@@ -299,7 +351,11 @@ async function spawnAgent(projectPath, prompt) {
   });
 
   if (prompt) {
-    setTimeout(() => {
+    // Wait for Claude to be ready (past trust prompt) before sending
+    waitForClaudeReady(finalName).then(ready => {
+      if (!ready) {
+        console.log(`[SPAWN] Claude not ready for ${finalName}, sending prompt anyway`);
+      }
       console.log(`[SPAWN] sending initial prompt to ${finalName}: ${prompt.substring(0, 80)}...`);
       const sent = sendToAgent(finalName, prompt);
       console.log(`[SPAWN] send result: ${sent}`);
@@ -307,7 +363,7 @@ async function spawnAgent(projectPath, prompt) {
         registry[finalName].initialPromptSent = true;
         saveRegistry();
       }
-    }, 3000);
+    });
   }
 
   return finalName;
@@ -611,10 +667,13 @@ app.post('/api/agents/:name/send', (req, res) => {
       delete reg.completedAt;
       saveRegistry();
 
-      // Send prompt after Claude starts up
-      setTimeout(() => {
+      // Wait for Claude to be ready (past trust prompt) before sending
+      waitForClaudeReady(name).then(ready => {
+        if (!ready) {
+          console.log(`[RESPAWN] Claude not ready for ${name}, sending prompt anyway`);
+        }
         sendToAgent(name, message);
-      }, 3000);
+      });
 
       return res.json({ status: 'respawned' });
     }
