@@ -253,22 +253,37 @@ async function waitForClaudeReady(sessionName, timeoutMs = 30000) {
 
     const recentText = lines.slice(-8).map(l => l.trim()).join('\n');
 
-    // Detect the bypass-permissions trust prompt and accept it
-    if (/Yes, I accept/i.test(recentText) && /No, exit/i.test(recentText)) {
-      console.log(`[SPAWN] Trust prompt detected for ${sessionName}, accepting...`);
+    // Detect interactive prompts that block Claude startup and dismiss them:
+    // 1. Bypass-permissions trust prompt: "No, exit" / "Yes, I accept"
+    // 2. Settings error prompt: "Exit and fix manually" / "Continue without these settings"
+    // Both need Down (to select option 2) then Enter to proceed.
+    if (/Enter to confirm/i.test(recentText)) {
+      const needsDown = (/No, exit/i.test(recentText) && /Yes, I accept/i.test(recentText))
+        || (/Exit and fix manually/i.test(recentText) && /Continue without/i.test(recentText));
+
+      if (needsDown) {
+        console.log(`[SPAWN] Selection prompt detected for ${sessionName}, selecting option 2...`);
+        try {
+          execSync(`tmux send-keys -t ${sessionName} Down`, { encoding: 'utf-8', timeout: 3000 });
+          await new Promise(r => setTimeout(r, 200));
+          execSync(`tmux send-keys -t ${sessionName} Enter`, { encoding: 'utf-8', timeout: 3000 });
+        } catch (e) {
+          console.log(`[SPAWN] Failed to dismiss prompt for ${sessionName}: ${e.message}`);
+        }
+        continue;
+      }
+
+      // Info-only prompts (e.g. Chrome extension notice): just press Enter
+      console.log(`[SPAWN] Info prompt detected for ${sessionName}, pressing Enter...`);
       try {
-        // Press Down to select "Yes, I accept", then Enter to confirm
-        execSync(`tmux send-keys -t ${sessionName} Down`, { encoding: 'utf-8', timeout: 3000 });
-        await new Promise(r => setTimeout(r, 200));
         execSync(`tmux send-keys -t ${sessionName} Enter`, { encoding: 'utf-8', timeout: 3000 });
       } catch (e) {
-        console.log(`[SPAWN] Failed to accept trust prompt for ${sessionName}: ${e.message}`);
+        console.log(`[SPAWN] Failed to dismiss info prompt for ${sessionName}: ${e.message}`);
       }
-      // Continue polling — Claude still needs to finish loading after accepting
       continue;
     }
 
-    // If Claude is actively running a task, it's past the trust prompt
+    // If Claude is actively running a task, it's past startup prompts
     if (/esc to interrupt/i.test(recentText)) return true;
 
     // Check if Claude is showing its input prompt (ready for input)
@@ -810,6 +825,33 @@ app.get('/api/agents/:name/output', (req, res) => {
     const raw = capturePaneOutput(req.params.name, 200);
     const clean = stripAnsi(raw);
     res.json({ output: clean, raw });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ─── Directory Browser ───────────────────────────────────────────────────────
+
+app.get('/api/browse', (req, res) => {
+  try {
+    const dir = req.query.dir || os.homedir();
+    const resolved = path.resolve(dir);
+
+    if (!fs.existsSync(resolved) || !fs.statSync(resolved).isDirectory()) {
+      return res.status(400).json({ error: 'Not a valid directory' });
+    }
+
+    const entries = fs.readdirSync(resolved, { withFileTypes: true });
+    const dirs = entries
+      .filter(e => e.isDirectory() && !e.name.startsWith('.'))
+      .map(e => e.name)
+      .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+
+    res.json({
+      current: resolved,
+      parent: path.dirname(resolved),
+      dirs,
+    });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
