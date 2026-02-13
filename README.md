@@ -2,7 +2,7 @@
 
 > 专为 **Claude Code Agent Team 模式**打造的 Web 看板。当多个 AI Agent 组成团队协作开发时，这个看板让整个过程**可视化、可干预、可回溯**。
 
-<img width="1466" height="725" alt="Screenshot" src="https://github.com/user-attachments/assets/cd31b988-f649-4e92-9844-7a1ece9aa634" />
+![Agent Viewer Screenshot](./screenshot.png)
 
 ## 什么是 Claude Code Agent Team？
 
