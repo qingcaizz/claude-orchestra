@@ -1,12 +1,13 @@
 {
   "name": "agent-viewer",
   "version": "1.0.0",
-  "description": "Kanban board for managing Claude Code agents in tmux",
+  "description": "Kanban board for managing Claude Code agents via node-pty",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.21.0"
+    "express": "^4.21.0",
+    "node-pty": "^1.0.0"
   }
 }

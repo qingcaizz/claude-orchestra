@@ -1,100 +1,170 @@
-# Agent Viewer
+# Agent Viewer — Claude Code Agent Team 实时协作看板
 
-A kanban board for managing multiple Claude Code agents running in tmux sessions. Spawn, monitor, and interact with agents from a single web UI.
+> 专为 **Claude Code Agent Team 模式**打造的 Web 看板。当多个 AI Agent 组成团队协作开发时，这个看板让整个过程**可视化、可干预、可回溯**。
 
-<img width="1466" height="725" alt="Screenshot 2026-02-09 at 14 54 21" src="https://github.com/user-attachments/assets/cd31b988-f649-4e92-9844-7a1ece9aa634" />
+<img width="1466" height="725" alt="Screenshot" src="https://github.com/user-attachments/assets/cd31b988-f649-4e92-9844-7a1ece9aa634" />
 
-Manage your agents from your mobile phone with Tailscale
+## 什么是 Claude Code Agent Team？
 
-![IMG_7782](https://github.com/user-attachments/assets/c7298d61-dd37-4d0f-8b0a-d9d1f0231782)
+Claude Code 支持创建 **Agent Team**：一个 Team Lead Agent 协调多个专业 Agent（后端、前端、测试等）并行工作，通过 SendMessage 互相沟通，通过 TaskList 管理任务依赖。
 
+**问题在于：这个过程对人类是黑箱的。**
 
-## Prerequisites
+- Agent 之间的 SendMessage 你看不到完整内容
+- idle_notification 只有几个词的摘要，信息量极低
+- 不知道哪个 Agent 卡住了、哪个在等待、哪个已完成
+- 想中途修改某个 Agent 的方向，没有统一入口
 
-- [Node.js](https://nodejs.org/) (v18+)
-- [tmux](https://github.com/tmux/tmux)
-- [Claude CLI](https://docs.anthropic.com/en/docs/claude-code) (`claude` command available in your PATH)
+**Agent Viewer 就是打开这个黑箱的工具。**
 
-### Install prerequisites (macOS)
+## 核心能力
 
-```bash
-brew install node tmux
-npm install -g @anthropic-ai/claude-code
+### 1. 三列看板 — 一眼掌握 Agent Team 全局
+
+```
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│   RUNNING    │  │     IDLE     │  │  COMPLETED   │
+│   (工作中)    │  │   (等待中)    │  │   (已完成)    │
+│              │  │              │  │              │
+│ ● backend   │  │ ○ frontend   │  │ ◌ qa-tester  │
+│ ● researcher │  │              │  │ ◌ data-prep  │
+└──────────────┘  └──────────────┘  └──────────────┘
 ```
 
-## Setup
+### 2. 中途沟通 — 随时给任何 Agent 发指令
+
+Agent Team 模式下，Team Lead 是唯一的沟通枢纽。但通过看板，**你可以直接绕过 Team Lead，对任何 Agent 下达指令**：
+
+- "停下来，先修这个 bug"
+- "用 TypeScript 重写"
+- "把进度汇报给 team-lead"
+
+每个 Agent 卡片都有输入框，`Ctrl+Enter` 发送。
+
+### 3. 终端输出 — 看到 Agent 的完整思考过程
+
+点击 `VIEW OUTPUT` 可以看到任何 Agent 的完整终端输出：
+
+- Agent 在读哪些文件、写了什么代码、调了什么命令
+- 完整 ANSI 彩色渲染（16/256/24-bit 色彩）
+- 实时滚动更新
+
+### 4. 一键创建 Agent
+
+点击 `[+ SPAWN]` 或按 `N`：
+
+- 指定项目路径 + 任务 prompt
+- 自动以 `claude --dangerously-skip-permissions` 启动
+- LLM 智能生成标签（先启发式命名，后台 Haiku 异步升级）
+- 自动处理 Claude Code 启动时的信任提示和弹窗
+
+### 5. 自动发现
+
+已经在终端里跑着的 Claude Code 进程？看板自动检测并纳入管理。
+
+## 状态检测逻辑
+
+看板每 **3 秒**轮询所有 Agent 的 PTY 终端输出，通过模式匹配判断状态：
+
+| 终端信号 | 判定状态 | 含义 |
+|---------|---------|------|
+| `esc to interrupt` | 🟢 **running** | Agent 正在执行工具调用或生成回复 |
+| 空提示符 `>` / `❯` | 🟡 **idle** | Agent 等待用户输入 |
+| `Yes/No` 选择 | 🟡 **idle** | Agent 等待权限批准 |
+| `space to select` | 🟡 **idle** | Agent 展示多选菜单 |
+| 进程退出 | ⚫ **completed** | Agent 已结束 |
+| 消息发送后 10s 内 | 🟢 **running** | 宽限期，防止误判 |
+
+## 卡片展示内容
+
+```
+┌─────────────────────────────────┐
+│ ● backend-dev                   │  ← 智能标签 (LLM 生成)
+│ ~/my-project                    │  ← 项目路径
+│ "搭建 Express 后端 API..."       │  ← 原始 prompt
+│                                 │
+│ [VIEW OUTPUT]  [ATTACH]  [KILL] │  ← 操作按钮
+│                                 │
+│ > 输入消息...          [SEND]   │  ← 随时发送指令
+└─────────────────────────────────┘
+```
+
+## 技术架构
+
+```
+┌─────────────────────────────────────────────┐
+│            Browser (前端)                     │
+│   单文件 index.html — 纯 HTML/CSS/JS         │
+│   SSE 实时接收状态推送                         │
+│   内置 ANSI-to-HTML 终端渲染器                │
+└──────────────────┬──────────────────────────┘
+                   │ SSE + REST API
+┌──────────────────▼──────────────────────────┐
+│            server.js (后端)                   │
+│   Express + node-pty (伪终端)                │
+│   Agent 注册表 (.agent-registry.json)         │
+│   状态检测引擎 (3s 轮询)                      │
+│   LLM 标签生成 (Claude Haiku)                │
+└──────────────────┬──────────────────────────┘
+                   │ PTY 伪终端
+┌──────────────────▼──────────────────────────┐
+│         Claude Code Agent × N                │
+│   每个 Agent 独立 PTY 会话                    │
+│   支持 Agent Team 模式下的所有 Agent          │
+└─────────────────────────────────────────────┘
+```
+
+## 快速开始
+
+### 环境要求
+
+- [Node.js](https://nodejs.org/) v18+
+- [Claude CLI](https://docs.anthropic.com/en/docs/claude-code)（`claude` 命令在 PATH 中可用）
+- Windows / macOS / Linux
+
+### 安装
 
 ```bash
-git clone <repo-url> && cd agent-viewer
+git clone https://github.com/qingcaizz/agent-viewer.git
+cd agent-viewer
 npm install
-```
-
-## Usage
-
-```bash
 npm start
 ```
 
-Open http://localhost:4200 in your browser.
+打开浏览器访问 http://localhost:4200
 
-### Configuration
+### 配置
 
-| Variable | Default     | Description              |
-|----------|-------------|--------------------------|
-| `PORT`   | `4200`      | Server port              |
-| `HOST`   | `localhost`  | Bind address (`0.0.0.0` for network access) |
+| 环境变量 | 默认值 | 说明 |
+|---------|--------|------|
+| `PORT` | `4200` | 服务端口 |
+| `HOST` | `0.0.0.0` | 绑定地址 |
 
-Example:
+## 手机远程管理（Tailscale）
 
-```bash
-HOST=0.0.0.0 PORT=3000 npm start
-```
+通过 [Tailscale](https://tailscale.com/) 可以用手机管理 Agent Team：
 
-## Remote Access via Tailscale
+1. 电脑和手机都装 Tailscale 并登录同一账号
+2. 启动 Agent Viewer
+3. 手机访问 `http://<tailscale-ip>:4200`
 
-You can access Agent Viewer from your phone (or any device) by using [Tailscale](https://tailscale.com/).
+![Mobile](https://github.com/user-attachments/assets/c7298d61-dd37-4d0f-8b0a-d9d1f0231782)
 
-### 1. Install Tailscale on your Mac
+## API
 
-```bash
-brew install tailscale
-```
+| Method | Path | 功能 |
+|--------|------|------|
+| GET | `/api/agents` | 获取所有 Agent 状态 |
+| POST | `/api/agents` | 创建新 Agent |
+| POST | `/api/agents/:name/send` | 发送消息 |
+| POST | `/api/agents/:name/upload` | 上传文件 |
+| DELETE | `/api/agents/:name` | 终止 Agent |
+| GET | `/api/agents/:name/output` | 终端输出 |
+| GET | `/api/events` | SSE 实时推送 |
 
-Or download from [tailscale.com/download](https://tailscale.com/download).
+## 致谢
 
-### 2. Install Tailscale on your phone
-
-Download the Tailscale app from the [App Store](https://apps.apple.com/app/tailscale/id1470499037) or [Google Play](https://play.google.com/store/apps/details?id=com.tailscale.ipn). Sign in with the same account.
-
-### 3. Start the server
-
-```bash
-npm start
-```
-
-The server binds to `0.0.0.0` by default, so it's already accessible on all network interfaces including Tailscale.
-
-### 4. Open on your phone
-
-Find your Mac's Tailscale IP (shown in the Tailscale app or via `tailscale ip`), then visit:
-
-```
-http://<tailscale-ip>:4200
-```
-
-If you have [MagicDNS](https://tailscale.com/kb/1081/magicdns) enabled, you can use your machine name instead:
-
-```
-http://<machine-name>:4200
-```
-
-## Features
-
-- **Spawn agents** — Click `[+ SPAWN]` or press `N`, enter a project path and prompt. Each agent launches in its own tmux session running `claude`.
-- **Kanban columns** — Agents are sorted into Running, Idle, and Completed columns based on their state.
-- **Auto-discovery** — Existing tmux sessions running Claude are automatically detected and added to the board.
-- **Live output** — Click `VIEW OUTPUT` to see the full terminal output with ANSI color rendering.
-- **Send messages** — Type in the prompt field on any card and press `Ctrl+Enter` to send follow-up messages to an agent.
-- **File uploads** — Drag and drop files onto a card or click `FILE` to send files to an agent.
-- **Re-spawn** — Completed agents can be re-spawned with a new prompt from the same project directory.
-- **Attach** — Click `ATTACH` to copy the `tmux attach` command for direct terminal access.
+基于 [hallucinogen/agent-viewer](https://github.com/hallucinogen/agent-viewer) 二次开发，新增：
+- **Windows 支持**（node-pty 替代 tmux）
+- **Agent Team 数据集成**（Team config / Task 状态读取）
+- **交互式操作**（权限确认、计划审批等自动处理）

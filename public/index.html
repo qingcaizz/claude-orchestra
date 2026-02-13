@@ -1262,6 +1262,1046 @@ header .status-bar .dot {
   text-transform: uppercase;
 }
 
+/* ─── VIEW TABS ────────────────────────────────────────────────────── */
+.view-tabs {
+  display: flex;
+  gap: 0;
+}
+
+.view-tab {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--dim);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.view-tab:first-child {
+  border-right: none;
+}
+
+.view-tab.active {
+  background: var(--white);
+  color: var(--bg);
+  border-color: var(--white);
+}
+
+.view-tab:not(.active):hover {
+  border-color: var(--white);
+  color: var(--white);
+}
+
+/* ─── TEAMS VIEW ───────────────────────────────────────────────────── */
+.teams-view {
+  display: none;
+  min-height: calc(100vh - 70px);
+}
+
+.teams-view.active {
+  display: flex;
+}
+
+.agents-view {
+  display: flex;
+}
+
+.agents-view:not(.active) {
+  display: none;
+}
+
+/* Team List Sidebar */
+.team-list {
+  width: 240px;
+  min-width: 240px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.team-list-header {
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--border);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.team-list-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.team-list-item {
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  margin-bottom: 4px;
+  transition: all 0.1s;
+}
+
+.team-list-item:hover {
+  border-color: var(--border);
+  background: var(--card-bg);
+}
+
+.team-list-item.active {
+  border-color: var(--green);
+  background: var(--card-bg);
+}
+
+.team-list-item .tli-name {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.team-list-item .tli-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.team-list-item .tli-dot.active { background: var(--green); }
+.team-list-item .tli-dot.idle { background: var(--amber); }
+.team-list-item .tli-dot.inactive { background: var(--dim); border: 1px solid var(--dim); }
+
+.team-list-item .tli-meta {
+  font-size: 10px;
+  color: var(--dim);
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+.team-list-empty {
+  color: #333;
+  text-align: center;
+  padding: 40px 16px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Team Detail Panel */
+.team-detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.team-detail-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Member Status Bar */
+.team-members-bar {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  overflow-x: auto;
+}
+
+.member-card {
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  padding: 8px 12px;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.member-card .mc-name {
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.member-card .mc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.member-card .mc-dot.working { background: var(--green); }
+.member-card .mc-dot.idle { background: var(--amber); }
+.member-card .mc-dot.offline { background: none; border: 1px dashed var(--dim); }
+.member-card .mc-status.offline { color: var(--dim); }
+
+.mc-wake-btn {
+  background: none;
+  border: 1px solid var(--green);
+  color: var(--green);
+  font-family: var(--font);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  margin-left: auto;
+}
+.mc-wake-btn:hover { background: var(--green); color: #000; }
+
+.member-card .mc-model {
+  font-size: 10px;
+  color: var(--dim);
+  margin-top: 2px;
+}
+
+.member-card .mc-status {
+  font-size: 10px;
+  color: var(--dim);
+  margin-top: 2px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.member-card .mc-status.working { color: var(--green); }
+.member-card .mc-status.idle { color: var(--amber); }
+
+/* Team Main Content - Task Board + Messages */
+.team-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Task Kanban */
+.team-tasks {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.team-tasks-header {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.team-kanban {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.tk-column {
+  flex: 1;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tk-column:last-child {
+  border-right: none;
+}
+
+.tk-column-header {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.tk-column-header .tk-ind {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+}
+
+.tk-column[data-status="pending"] .tk-ind { background: var(--dim); }
+.tk-column[data-status="in_progress"] .tk-ind { background: var(--green); }
+.tk-column[data-status="completed"] .tk-ind { background: #50fa7b; opacity: 0.5; }
+
+.tk-column-header .tk-count {
+  color: var(--dim);
+  font-weight: 400;
+}
+
+.tk-column-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Task Card */
+.task-card {
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  padding: 10px 12px;
+}
+
+.task-card .tc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.task-card .tc-id {
+  font-size: 10px;
+  color: var(--dim);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.task-card .tc-subject {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  flex: 1;
+  word-break: break-word;
+}
+
+.task-card .tc-owner {
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--dim);
+}
+
+.task-card .tc-owner span {
+  color: var(--green);
+}
+
+.task-card .tc-active-form {
+  margin-top: 4px;
+  font-size: 10px;
+  color: var(--amber);
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+.task-card .tc-deps {
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--dim);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.task-card .tc-dep-blocked {
+  color: var(--red);
+}
+
+.task-card .tc-dep-blocks {
+  color: var(--amber);
+}
+
+.tk-empty {
+  color: #333;
+  text-align: center;
+  padding: 20px 8px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Messages Panel */
+.team-messages {
+  width: 300px;
+  min-width: 300px;
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.team-messages-header {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.team-messages-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--dim);
+  font-family: var(--font);
+  font-size: 10px;
+  padding: 2px 8px;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.team-messages-toggle:hover {
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.team-messages-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 12px;
+}
+
+.msg-item {
+  padding: 6px 0;
+  border-bottom: 1px solid #111;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.msg-item:last-child {
+  border-bottom: none;
+}
+
+.msg-time {
+  color: var(--dim);
+  font-size: 10px;
+}
+
+.msg-route {
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+
+.msg-type-message .msg-route { color: var(--white); }
+.msg-type-task .msg-route { color: var(--green); }
+.msg-type-shutdown_request .msg-route { color: var(--red); }
+.msg-type-plan_approval_request .msg-route { color: var(--amber); }
+.msg-type-broadcast .msg-route { color: #8be9fd; }
+
+.msg-text {
+  color: #ccc;
+  font-size: 11px;
+  word-break: break-word;
+  max-height: 60px;
+  overflow: hidden;
+}
+
+.msg-empty {
+  color: #333;
+  text-align: center;
+  padding: 40px 8px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Collapsed messages */
+.team-messages.collapsed {
+  width: 40px;
+  min-width: 40px;
+}
+
+.team-messages.collapsed .team-messages-header span,
+.team-messages.collapsed .team-messages-body {
+  display: none;
+}
+
+/* ─── TEAMS MOBILE ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .teams-view.active {
+    flex-direction: column;
+  }
+
+  .team-list {
+    width: 100%;
+    min-width: 100%;
+    max-height: 200px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .team-list-body {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .team-list-item {
+    min-width: 160px;
+    margin-bottom: 0;
+  }
+
+  .team-content {
+    flex-direction: column;
+  }
+
+  .team-messages {
+    width: 100%;
+    min-width: 100%;
+    max-height: 200px;
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .team-messages.collapsed {
+    width: 100%;
+    min-width: 100%;
+    max-height: 40px;
+  }
+
+  .team-kanban {
+    flex-direction: column;
+  }
+
+  .tk-column {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    max-height: 250px;
+  }
+
+  .view-tabs {
+    gap: 0;
+  }
+
+  .view-tab {
+    padding: 4px 10px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+}
+
+/* ─── MEMBER DETAIL MODAL ──────────────────────────────────────────── */
+.member-modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 2500;
+  align-items: center;
+  justify-content: center;
+}
+
+.member-modal-overlay.active {
+  display: flex;
+}
+
+.member-modal {
+  border: 2px solid var(--white);
+  background: var(--bg);
+  width: 900px;
+  max-width: 95vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.member-modal-header {
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.member-modal-header .mm-title {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.member-modal-header .mm-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.member-modal-header .mm-actions button {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 11px;
+  padding: 4px 12px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.1s;
+}
+
+.member-modal-header .mm-btn-stop {
+  border-color: var(--red) !important;
+  color: var(--red) !important;
+}
+
+.member-modal-header .mm-btn-stop:hover {
+  background: var(--red) !important;
+  color: var(--white) !important;
+}
+
+.member-modal-header .mm-btn-close:hover {
+  background: var(--white);
+  color: var(--bg);
+}
+
+.member-modal-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.mm-info-sidebar {
+  width: 260px;
+  min-width: 260px;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.mm-info-section {
+  margin-bottom: 14px;
+}
+
+.mm-info-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 4px;
+}
+
+.mm-info-value {
+  font-size: 11px;
+  color: var(--white);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.mm-info-value.dim {
+  color: var(--dim);
+}
+
+.mm-prompt-text {
+  font-size: 11px;
+  color: #ccc;
+  line-height: 1.5;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 6px 8px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.mm-usage {
+  display: flex;
+  gap: 12px;
+}
+
+.mm-usage-item {
+  font-size: 11px;
+}
+
+.mm-usage-item .usage-label {
+  color: var(--dim);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.mm-usage-item .usage-val {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.mm-transcript-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mm-transcript-header {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.mm-transcript-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mm-msg {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.mm-msg.user {
+  border-left: 3px solid var(--amber);
+}
+
+.mm-msg.assistant {
+  border-left: 3px solid var(--green);
+}
+
+.mm-msg.tool {
+  border-left: 3px solid var(--dim);
+  color: var(--dim);
+  font-size: 10px;
+}
+
+.mm-msg-role {
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.mm-msg.user .mm-msg-role { color: var(--amber); }
+.mm-msg.assistant .mm-msg-role { color: var(--green); }
+.mm-msg.tool .mm-msg-role { color: var(--dim); }
+
+.mm-msg-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.mm-msg-tools {
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--dim);
+}
+
+.mm-msg-tool-item {
+  padding: 2px 0;
+}
+
+.mm-msg-tool-item .tool-name {
+  color: #8be9fd;
+  font-weight: 700;
+}
+
+.mm-transcript-empty {
+  color: #333;
+  text-align: center;
+  padding: 40px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.mm-send-bar {
+  border-top: 1px solid var(--border);
+  padding: 8px 12px;
+  display: flex;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+.mm-send-bar .prefix {
+  padding: 8px 10px;
+  background: #111;
+  border: 1px solid var(--border);
+  border-right: none;
+  color: var(--green);
+  font-size: 12px;
+}
+
+.mm-send-bar input {
+  flex: 1;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 12px;
+  padding: 8px 10px;
+  outline: none;
+}
+
+.mm-send-bar input:focus {
+  border-color: var(--green);
+}
+
+.mm-send-bar button {
+  padding: 8px 16px;
+  background: none;
+  border: 1px solid var(--green);
+  border-left: none;
+  color: var(--green);
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.mm-send-bar button:hover {
+  background: var(--green);
+  color: var(--bg);
+}
+
+/* Member card clickable */
+.member-card.clickable {
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.member-card.clickable:hover {
+  border-color: var(--green);
+  background: rgba(0, 255, 0, 0.03);
+}
+
+/* Message reply */
+.msg-reply-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--dim);
+  font-family: var(--font);
+  font-size: 9px;
+  padding: 1px 6px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-left: 8px;
+}
+
+.msg-reply-btn:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* Team message send bar */
+.team-send-bar {
+  border-top: 1px solid var(--border);
+  padding: 8px;
+  display: flex;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+.team-send-bar select {
+  background: #111;
+  border: 1px solid var(--border);
+  border-right: none;
+  color: var(--green);
+  font-family: var(--font);
+  font-size: 10px;
+  padding: 6px 8px;
+  outline: none;
+  min-width: 80px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.team-send-bar input {
+  flex: 1;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 11px;
+  padding: 6px 8px;
+  outline: none;
+}
+
+.team-send-bar input:focus {
+  border-color: var(--green);
+}
+
+.team-send-bar button {
+  padding: 6px 12px;
+  background: none;
+  border: 1px solid var(--green);
+  border-left: none;
+  color: var(--green);
+  font-family: var(--font);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.team-send-bar button:hover {
+  background: var(--green);
+  color: var(--bg);
+}
+
+/* Task card actions */
+.tc-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tc-actions select,
+.tc-actions button {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--dim);
+  font-family: var(--font);
+  font-size: 9px;
+  padding: 2px 6px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  appearance: none;
+}
+
+.tc-actions select:hover,
+.tc-actions button:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+@media (max-width: 768px) {
+  .member-modal {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border: none;
+  }
+
+  .member-modal-body {
+    flex-direction: column;
+  }
+
+  .mm-info-sidebar {
+    width: 100%;
+    min-width: 100%;
+    max-height: 200px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+/* Timeline */
+.team-timeline { flex:1; overflow-y:auto; padding:12px 16px; }
+.tl-event { display:flex; gap:10px; padding:8px 10px; border-bottom:1px solid #111; cursor:pointer; transition:background 0.1s; font-size:11px; align-items:flex-start; }
+.tl-event:hover { background:rgba(255,255,255,0.03); }
+.tl-event .tl-time { color:var(--dim); font-size:10px; white-space:nowrap; min-width:60px; flex-shrink:0; }
+.tl-event .tl-actor { font-weight:700; font-size:10px; letter-spacing:0.5px; min-width:80px; flex-shrink:0; }
+.tl-event .tl-summary { flex:1; color:#ccc; word-break:break-word; }
+.tl-event .tl-mark { flex-shrink:0; font-size:12px; }
+.tl-event[data-type="task_completed"] { border-left:3px solid #50fa7b; }
+.tl-event[data-type="task_completed"] .tl-mark { color:#50fa7b; }
+.tl-event[data-type="plan_approval"] { border-left:3px solid var(--amber); background:rgba(255,170,0,0.05); }
+.tl-event[data-type="plan_approval"] .tl-mark { color:var(--amber); }
+.tl-event[data-type="shutdown"] { border-left:3px solid var(--red); }
+.tl-event[data-type="boss_message"] { border-left:3px solid #8be9fd; }
+.tl-event[data-type="boss_message"] .tl-actor { color:#8be9fd; }
+.tl-event[data-type="broadcast"] .tl-actor { color:#8be9fd; }
+.tl-event[data-type="task_started"] { border-left:3px solid var(--green); }
+.tl-event[data-type="message"] { border-left:3px solid #bd93f9; }
+.tl-event[data-type="agent_message"] { border-left:3px solid #bd93f9; }
+.tl-event[data-type="agent_activity"] { border-left:3px solid #6272a4; opacity:0.8; }
+.tl-event[data-type="peer_dm"] { border-left:3px solid #ffb86c; }
+.tl-event[data-type="shutdown_approved"] { border-left:3px solid var(--red); }
+.tl-event .tl-direction { font-size:9px; color:var(--dim); letter-spacing:0.5px; white-space:nowrap; min-width:100px; flex-shrink:0; }
+.tl-event .tl-direction .tl-arrow { color:var(--amber); margin:0 2px; }
+.tl-detail { display:none; padding:8px 12px; margin:0 10px 8px 80px; background:var(--card-bg); border:1px solid var(--border); font-size:11px; color:#ccc; white-space:pre-wrap; word-break:break-word; max-height:300px; overflow-y:auto; }
+.tl-detail.open { display:block; }
+.tl-expand-hint { font-size:9px; color:var(--dim); margin-left:4px; flex-shrink:0; }
+.tl-empty { color:#333; text-align:center; padding:40px 16px; font-size:11px; letter-spacing:2px; text-transform:uppercase; }
+
+/* Agent role colors for timeline */
+.tl-role-0 { color:#8be9fd; }
+.tl-role-1 { color:#bd93f9; }
+.tl-role-2 { color:#ff79c6; }
+.tl-role-3 { color:#f1fa8c; }
+.tl-role-4 { color:#ffb86c; }
+.tl-role-5 { color:#50fa7b; }
+.tl-role-6 { color:#ff5555; }
+.tl-role-7 { color:#6272a4; }
+
+/* Member card dynamic summary */
+.mc-activity { font-size:9px; color:#aaa; margin-top:4px; max-height:28px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:160px; }
+.mc-task-label { font-size:9px; color:var(--green); margin-top:2px; letter-spacing:0.5px; }
+
+/* Timeline filter */
+.timeline-filter { display:flex; gap:4px; }
+.filter-btn { font-size:10px; padding:4px 10px; border:1px solid var(--border); color:var(--dim); cursor:pointer; letter-spacing:1px; transition:all 0.1s; }
+.filter-btn:hover { border-color:var(--white); color:var(--white); }
+.filter-btn.active { border-color:var(--green); color:var(--green); font-weight:700; }
+
+/* Member inline expansion */
+.member-activity-inline { padding:8px 12px; margin:4px 0; background:var(--card-bg); border:1px solid var(--border); font-size:10px; max-height:200px; overflow-y:auto; }
+.member-activity-inline .mai-item { padding:4px 0; border-bottom:1px solid #111; }
+.member-activity-inline .mai-item:last-child { border-bottom:none; }
+
+/* Boss input area */
+.boss-input { border-top:2px solid var(--border); padding:12px 16px; display:flex; gap:8px; align-items:center; flex-shrink:0; }
+.boss-input select { background:var(--input-bg); border:1px solid var(--border); color:var(--white); font-family:var(--font); font-size:11px; padding:6px 8px; }
+.boss-input input[type="text"] { flex:1; background:var(--input-bg); border:1px solid var(--border); color:var(--white); font-family:var(--font); font-size:11px; padding:6px 10px; outline:none; }
+.boss-input input[type="text"]:focus { border-color:var(--green); }
+.boss-input button { background:none; border:1px solid var(--green); color:var(--green); font-family:var(--font); font-size:10px; font-weight:700; padding:6px 14px; cursor:pointer; letter-spacing:1px; text-transform:uppercase; transition:all 0.1s; }
+.boss-input button:hover { background:var(--green); color:var(--bg); }
+.boss-input .quick-actions { display:flex; gap:4px; }
+.boss-input .quick-btn { background:none; border:1px solid var(--border); color:var(--dim); font-family:var(--font); font-size:9px; padding:4px 8px; cursor:pointer; letter-spacing:0.5px; transition:all 0.1s; }
+.boss-input .quick-btn:hover { border-color:var(--white); color:var(--white); }
+
 /* ─── SCROLLBAR ─────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
@@ -1274,12 +2314,19 @@ header .status-bar .dot {
 <!-- ─── HEADER ─────────────────────────────────────────────────────── -->
 <header>
   <h1>AGENT VIEWER</h1>
+  <div class="view-tabs">
+    <button class="view-tab active" data-view="agents" onclick="switchView('agents')">AGENTS</button>
+    <button class="view-tab" data-view="teams" onclick="switchView('teams')">TEAMS</button>
+  </div>
   <div class="status-bar">
     <span class="dot"></span>
     <span id="connectionStatus">CONNECTING...</span>
   </div>
   <button class="spawn-btn" onclick="openSpawnModal()">[+ SPAWN] <span style="color:var(--dim);font-size:10px;font-weight:400">(N)</span></button>
 </header>
+
+<!-- ─── AGENTS VIEW ─────────────────────────────────────────────────── -->
+<div class="agents-view active" id="agentsView">
 
 <!-- ─── MOBILE TAB BAR ─────────────────────────────────────────────── -->
 <div class="mobile-tabs">
@@ -1332,6 +2379,21 @@ header .status-bar .dot {
   </div>
 </div>
 
+</div><!-- /agents-view -->
+
+<!-- ─── TEAMS VIEW ─────────────────────────────────────────────────── -->
+<div class="teams-view" id="teamsView">
+  <div class="team-list">
+    <div class="team-list-header">TEAMS</div>
+    <div class="team-list-body" id="teamListBody">
+      <div class="team-list-empty">NO TEAMS DETECTED</div>
+    </div>
+  </div>
+  <div class="team-detail" id="teamDetail">
+    <div class="team-detail-empty">SELECT A TEAM</div>
+  </div>
+</div>
+
 <!-- ─── MOBILE FAB ─────────────────────────────────────────────────── -->
 <button class="fab" onclick="openSpawnModal()">+</button>
 
@@ -1345,7 +2407,7 @@ header .status-bar .dot {
         <div class="input-row">
           <span class="input-prefix">&gt;_</span>
           <div class="combo-wrapper">
-            <input type="text" id="spawnProject" placeholder="/Users/gogo/Code/myproject"
+            <input type="text" id="spawnProject" placeholder="C:\Users\EDY\projects"
                    autocomplete="off"
                    oninput="filterRecentProjects()"
                    onfocus="filterRecentProjects()"
@@ -1388,6 +2450,43 @@ header .status-bar .dot {
   </div>
 </div>
 
+<!-- ─── MEMBER DETAIL MODAL ────────────────────────────────────────── -->
+<div class="member-modal-overlay" id="memberModal">
+  <div class="member-modal">
+    <div class="member-modal-header">
+      <div class="mm-title">
+        <span id="mmDot" class="mc-dot"></span>
+        <span id="mmName">AGENT</span>
+        <span id="mmModel" style="color:var(--dim);font-size:10px;font-weight:400"></span>
+      </div>
+      <div class="mm-actions">
+        <button class="mm-btn-stop" id="mmStopBtn" onclick="shutdownTeamAgent()">STOP</button>
+        <button class="mm-btn-close" onclick="closeMemberModal()">[X] CLOSE</button>
+      </div>
+    </div>
+    <div class="member-modal-body">
+      <div class="mm-info-sidebar" id="mmInfoSidebar">
+        <!-- Filled by JS -->
+      </div>
+      <div class="mm-transcript-panel">
+        <div class="mm-transcript-header">
+          <span>CONVERSATION</span>
+          <span id="mmTranscriptCount" style="font-weight:400"></span>
+        </div>
+        <div class="mm-transcript-body" id="mmTranscriptBody">
+          <div class="mm-transcript-empty">LOADING...</div>
+        </div>
+        <div class="mm-send-bar">
+          <span class="prefix">&gt;_</span>
+          <input type="text" id="mmSendInput" placeholder="Send a message to this agent..."
+                 onkeydown="if(event.key==='Enter')sendToTeamAgent()" />
+          <button onclick="sendToTeamAgent()">SEND</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ─── CONFIRM DIALOG ─────────────────────────────────────────────── -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
@@ -1422,6 +2521,8 @@ function connectSSE() {
       } else if (data.type === 'agents') {
         agents = data.agents;
         renderBoard();
+      } else if (data.type === 'teams') {
+        handleTeamsUpdate(data);
       }
     } catch (e) {
       console.error('SSE parse error:', e);
@@ -1516,7 +2617,7 @@ function renderColumn(columnId, columnAgents, emptyText) {
 function renderCard(agent) {
   const uptime = agent.createdAt ? formatDuration(Date.now() - agent.createdAt) : '--';
   const idleFor = agent.idleSince ? formatDuration(Date.now() - agent.idleSince) : '';
-  const projectName = agent.projectPath ? agent.projectPath.split('/').filter(Boolean).pop() : '--';
+  const projectName = agent.projectPath ? agent.projectPath.split(/[\\/]/).filter(Boolean).pop() : '--';
   const lastActHtml = ansiToHtml(agent.lastActivity || '');
 
   let metaLines = '';
@@ -1615,7 +2716,7 @@ function renderCard(agent) {
       <div class="card-actions">
         <button class="btn-send" onclick="sendPrompt('${agent.name}')">SEND</button>
         <button onclick="document.getElementById('file-${agent.name}').click()">FILE</button>
-        <button onclick="copyAttach('${agent.name}')">TERMINAL</button>
+        <button onclick="copyAttach('${agent.name}')">VIEW</button>
         <button class="btn-stop" onclick="confirmStop('${agent.name}')">STOP</button>
         <button onclick="openOutputViewer('${agent.name}')">VIEW OUTPUT</button>
       </div>`;
@@ -1765,24 +2866,9 @@ async function uploadFile(agentName, input) {
 }
 
 function copyAttach(agentName) {
-  const cmd = `tmux attach -t ${agentName}`;
-  navigator.clipboard.writeText(cmd).then(() => {
-    // Brief visual feedback on the button
-    const btns = document.querySelectorAll(`[data-name="${agentName}"] .card-actions button`);
-    for (const btn of btns) {
-      if (btn.textContent === 'TERMINAL') {
-        btn.textContent = 'COPIED!';
-        btn.style.borderColor = 'var(--green)';
-        btn.style.color = 'var(--green)';
-        setTimeout(() => {
-          btn.textContent = 'TERMINAL';
-          btn.style.borderColor = '';
-          btn.style.color = '';
-        }, 1500);
-        break;
-      }
-    }
-  });
+  // On Windows, sessions are managed in-process via node-pty (no tmux).
+  // Open the output viewer instead.
+  openOutputViewer(agentName);
 }
 
 async function stopAgent(agentName) {
@@ -2438,10 +3524,598 @@ function initMobileLayout() {
 
 window.addEventListener('resize', initMobileLayout);
 
+// ─── VIEW SWITCHING ────────────────────────────────────────────────────
+let currentView = 'agents';
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.view === view);
+  });
+  document.getElementById('agentsView').classList.toggle('active', view === 'agents');
+  document.getElementById('teamsView').classList.toggle('active', view === 'teams');
+
+  // Show/hide spawn button (only in agents view)
+  const spawnBtn = document.querySelector('.spawn-btn');
+  if (spawnBtn) spawnBtn.style.display = view === 'agents' ? '' : 'none';
+  const fab = document.querySelector('.fab');
+  if (fab) fab.style.display = (view === 'agents' && isMobile()) ? 'flex' : 'none';
+
+  if (view === 'teams') {
+    fetchTeams();
+  }
+}
+
+// ─── TEAMS STATE ───────────────────────────────────────────────────────
+let teamsList = [];
+let teamsData = {};
+let selectedTeam = null;
+let timelineFilter = 'all'; // 'all' or 'important'
+
+async function fetchTeams() {
+  try {
+    const res = await fetch('/api/teams');
+    teamsList = await res.json();
+    renderTeamList();
+    if (selectedTeam) {
+      await fetchTeamDetail(selectedTeam);
+    }
+  } catch (e) {
+    console.error('Fetch teams error:', e);
+  }
+}
+
+async function fetchTeamDetail(teamName) {
+  try {
+    const res = await fetch(`/api/teams/${encodeURIComponent(teamName)}/full`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    teamsData[teamName] = data;
+    renderTeamDetail(teamName);
+  } catch (e) {
+    console.error('Fetch team detail error:', e);
+  }
+}
+
+function selectTeam(teamName) {
+  selectedTeam = teamName;
+  renderTeamList();
+  fetchTeamDetail(teamName);
+}
+
+// ─── TEAMS RENDERING ──────────────────────────────────────────────────
+
+function renderTeamList() {
+  const body = document.getElementById('teamListBody');
+  if (teamsList.length === 0) {
+    body.innerHTML = '<div class="team-list-empty">NO TEAMS DETECTED</div>';
+    return;
+  }
+
+  body.innerHTML = teamsList.map(team => {
+    const dotClass = team.hasActiveMembers ? 'active' : (team.totalTasks > 0 ? 'idle' : 'inactive');
+    const isActive = selectedTeam === team.name;
+    return `
+      <div class="team-list-item${isActive ? ' active' : ''}" onclick="selectTeam('${escapeAttr(team.name)}')">
+        <div class="tli-name">
+          <span class="tli-dot ${dotClass}"></span>
+          ${escapeHtml(team.name)}
+        </div>
+        <div class="tli-meta">${team.memberCount} MEMBERS &middot; ${team.activeTasks}/${team.totalTasks} TASKS</div>
+      </div>`;
+  }).join('');
+}
+
+function renderTeamDetail(teamName) {
+  const detail = document.getElementById('teamDetail');
+  const data = teamsData[teamName];
+  if (!data || !data.config) {
+    detail.innerHTML = '<div class="team-detail-empty">FAILED TO LOAD TEAM</div>';
+    return;
+  }
+
+  const members = data.config.members || [];
+  const tasks = data.tasks || [];
+  const events = data.events || [];
+  const messages = data.messages || [];
+
+  const inProgressOwners = new Set(
+    tasks.filter(t => t.status === 'in_progress' && t.owner).map(t => t.owner)
+  );
+
+  // Task summary for status bar
+  const pendingCount = tasks.filter(t => t.status === 'pending').length;
+  const activeCount = tasks.filter(t => t.status === 'in_progress').length;
+  const doneCount = tasks.filter(t => t.status === 'completed').length;
+
+  detail.innerHTML = `
+    <div class="team-members-bar" id="teamMembersBar">
+      ${renderMemberCards(members, tasks, inProgressOwners, data.memberSummary, data.messages, events)}
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <div class="timeline-filter">
+          <span class="filter-btn ${timelineFilter === 'all' ? 'active' : ''}" onclick="setTimelineFilter('all')">全部</span>
+          <span class="filter-btn ${timelineFilter === 'important' ? 'active' : ''}" onclick="setTimelineFilter('important')">重要</span>
+        </div>
+        <span style="font-size:10px;color:var(--dim);letter-spacing:1px">TASKS: ${pendingCount}/${activeCount}/${doneCount}</span>
+      </div>
+    </div>
+    <div class="team-timeline" id="teamTimeline">
+      ${renderTimeline(events)}
+    </div>
+    <div class="boss-input">
+      <select id="bossTarget">
+        <option value="__all__">@ALL</option>
+        ${members.map(m => `<option value="${escapeAttr(m.name || m.agentId)}">@${escapeHtml(m.name || m.agentId)}</option>`).join('')}
+      </select>
+      <input type="text" id="bossInput" placeholder="Send message..."
+             onkeydown="if(event.key==='Enter')sendBossMessage('${escapeAttr(teamName)}')" />
+      <button onclick="sendBossMessage('${escapeAttr(teamName)}')">SEND</button>
+      <div class="quick-actions">
+        <button class="quick-btn" onclick="quickBossMessage('${escapeAttr(teamName)}','Approved, proceed.')">APPROVE</button>
+        <button class="quick-btn" onclick="quickBossMessage('${escapeAttr(teamName)}','Rejected, revise the approach.')">REJECT</button>
+        <button class="quick-btn" onclick="quickBossMessage('${escapeAttr(teamName)}','Continue working.')">CONTINUE</button>
+      </div>
+    </div>`;
+
+  // Auto-scroll timeline to bottom
+  const timeline = document.getElementById('teamTimeline');
+  if (timeline) timeline.scrollTop = timeline.scrollHeight;
+}
+
+function renderMemberCards(members, tasks, inProgressOwners, memberSummary, messages, events) {
+  if (members.length === 0) return '<div style="color:var(--dim);font-size:11px;padding:4px">NO MEMBERS</div>';
+
+  return members.map(m => {
+    const name = m.name || m.agentId || 'unknown';
+    const summary = memberSummary?.[name] || {};
+    const isAlive = summary.isAlive !== undefined ? summary.isAlive : true;
+    const isWorking = inProgressOwners.has(name);
+    const completedAll = tasks.length > 0 && tasks.every(t => t.status === 'completed');
+
+    let dotClass, statusClass;
+    if (!isAlive) { dotClass = 'offline'; statusClass = 'offline'; }
+    else if (isWorking) { dotClass = 'working'; statusClass = 'working'; }
+    else if (completedAll) { dotClass = 'offline'; statusClass = 'offline'; }
+    else { dotClass = 'idle'; statusClass = 'idle'; }
+
+    // Find current in_progress task with activeForm
+    const activeTask = tasks.find(t => t.status === 'in_progress' && t.owner === name);
+    const activeForm = activeTask ? (activeTask.activeForm || activeTask.subject || '') : '';
+
+    // Find last message sent by this member — check both inbox and transcript events
+    const memberMsgs = (messages || []).filter(msg => msg.from === name);
+    const lastInboxMsg = memberMsgs.length > 0 ? memberMsgs[memberMsgs.length - 1] : null;
+
+    // Also check transcript events for latest activity
+    const memberEvents = (events || []).filter(ev => ev.actor === name && ev.type === 'agent_message');
+    const lastEvent = memberEvents.length > 0 ? memberEvents[memberEvents.length - 1] : null;
+
+    // Pick the best activity text
+    let activityText = '';
+    if (activeForm) {
+      activityText = '';  // Will use dedicated task label
+    } else if (lastEvent) {
+      activityText = (lastEvent.summary || '').substring(0, 80);
+    } else if (lastInboxMsg) {
+      activityText = (lastInboxMsg.text || '').substring(0, 80);
+    }
+
+    // Build activity line
+    let activityHtml = '';
+    if (activeForm) {
+      activityHtml = `<div class="mc-task-label">${escapeHtml(activeForm)}</div>`;
+    } else if (activityText) {
+      activityHtml = `<div class="mc-activity" title="${escapeAttr(activityText)}">${escapeHtml(activityText.substring(0, 60))}${activityText.length > 60 ? '...' : ''}</div>`;
+    }
+
+    return `
+      <div class="member-card clickable" onclick="openMemberModal('${escapeAttr(selectedTeam)}', '${escapeAttr(name)}')">
+        <div class="mc-name">
+          <span class="mc-dot ${dotClass}"></span>
+          ${escapeHtml(name)}
+        </div>
+        <div class="mc-status ${statusClass}">${isAlive ? (isWorking ? 'working' : 'online') : 'offline'}</div>
+        ${activityHtml}
+      </div>`;
+  }).join('');
+}
+
+function renderTimeline(events) {
+  if (!events || events.length === 0) {
+    return '<div class="tl-empty">NO ACTIVITY YET</div>';
+  }
+
+  // Filter events based on timelineFilter
+  const importantTypes = ['task_completed', 'task_started', 'plan_approval', 'plan_approval_response', 'shutdown', 'shutdown_approved', 'boss_message', 'agent_message', 'broadcast', 'peer_dm'];
+  const filteredEvents = timelineFilter === 'important'
+    ? events.filter(ev => importantTypes.includes(ev.type))
+    : events;
+
+  if (filteredEvents.length === 0) {
+    return '<div class="tl-empty">NO IMPORTANT ACTIVITY</div>';
+  }
+
+  // Build agent color map for consistent coloring
+  const agentColorMap = {};
+  let colorIdx = 0;
+  filteredEvents.forEach(ev => {
+    if (ev.actor && !agentColorMap[ev.actor]) {
+      agentColorMap[ev.actor] = colorIdx++ % 8;
+    }
+  });
+
+  return filteredEvents.map((ev, idx) => {
+    const time = formatMessageTime(ev.timestamp);
+    const actor = ev.actor || 'unknown';
+    const summary = ev.summary || '';
+    const type = ev.type || 'message';
+    const detail = ev.detail || '';
+    const direction = ev.direction || '';
+    const actorColor = agentColorMap[actor] !== undefined ? agentColorMap[actor] : 0;
+
+    let mark = '';
+    if (type === 'task_completed') mark = '\u2713';
+    else if (type === 'task_started') mark = '\u25B6';
+    else if (type === 'plan_approval') mark = '\u2696';
+    else if (type === 'shutdown' || type === 'shutdown_approved') mark = '\u23FB';
+    else if (type === 'broadcast') mark = '\uD83D\uDCE2';
+    else if (type === 'agent_message') mark = '\uD83D\uDCAC';
+    else if (type === 'peer_dm') mark = '\u21C4';
+
+    // For message-type events, show direction (A → B)
+    const isMsg = ['message', 'boss_message', 'broadcast', 'agent_message', 'peer_dm'].includes(type);
+    const directionHtml = isMsg && direction
+      ? `<span class="tl-direction">${escapeHtml(direction)}</span>`
+      : '';
+
+    // Show expand hint if there's more detail than summary
+    const hasExpandable = detail && detail.length > summary.length;
+    const expandHint = hasExpandable ? '<span class="tl-expand-hint">[+]</span>' : '';
+
+    return `
+      <div class="tl-event" data-type="${escapeAttr(type)}" onclick="toggleEventDetail(${idx})">
+        <span class="tl-time">${time}</span>
+        <span class="tl-actor tl-role-${actorColor}">${escapeHtml(actor)}</span>
+        ${directionHtml}
+        <span class="tl-summary">${escapeHtml(summary)}</span>
+        ${expandHint}
+        ${mark ? `<span class="tl-mark">${mark}</span>` : ''}
+      </div>
+      ${detail ? `<div class="tl-detail" id="tlDetail${idx}">${escapeHtml(detail)}</div>` : ''}`;
+  }).join('');
+}
+
+function setTimelineFilter(mode) {
+  timelineFilter = mode;
+  if (selectedTeam) {
+    renderTeamDetail(selectedTeam);
+  }
+}
+
+function formatMessageTime(ts) {
+  if (!ts) return '--:--:--';
+  const d = typeof ts === 'string' ? new Date(ts) : new Date(ts);
+  if (isNaN(d.getTime())) return '--:--:--';
+  return d.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
+function toggleEventDetail(idx) {
+  const el = document.getElementById('tlDetail' + idx);
+  if (el) el.classList.toggle('open');
+}
+
+// Handle SSE team updates
+function handleTeamsUpdate(data) {
+  teamsList = data.teams || [];
+  if (data.teamsData) {
+    teamsData = data.teamsData;
+  }
+  if (currentView === 'teams') {
+    renderTeamList();
+    if (selectedTeam && teamsData[selectedTeam]) {
+      renderTeamDetail(selectedTeam);
+    }
+  }
+}
+
+// ─── MEMBER DETAIL MODAL ────────────────────────────────────────────
+let memberModalTeam = null;
+let memberModalAgent = null;
+let memberTranscriptTimer = null;
+
+function openMemberModal(teamName, agentName) {
+  memberModalTeam = teamName;
+  memberModalAgent = agentName;
+
+  const data = teamsData[teamName];
+  const members = data?.config?.members || [];
+  const member = members.find(m => (m.name || m.agentId) === agentName);
+  const summary = data?.memberSummary?.[agentName] || {};
+  const tasks = data?.tasks || [];
+
+  // Header
+  document.getElementById('mmName').textContent = agentName;
+  document.getElementById('mmModel').textContent = member?.model || summary.model || '';
+
+  // Dot status
+  const dot = document.getElementById('mmDot');
+  const inProgressOwners = new Set(tasks.filter(t => t.status === 'in_progress' && t.owner).map(t => t.owner));
+  const isWorking = inProgressOwners.has(agentName);
+  const isAlive = summary.isAlive !== undefined ? summary.isAlive : true;
+  dot.className = 'mc-dot ' + (!isAlive ? 'offline' : isWorking ? 'working' : 'idle');
+
+  // Info sidebar
+  const sidebar = document.getElementById('mmInfoSidebar');
+  const prompt = member?.prompt || summary.prompt || '';
+  const agentType = member?.agentType || summary.agentType || '';
+  const ownedTasks = tasks.filter(t => t.owner === agentName);
+  const activeT = ownedTasks.filter(t => t.status === 'in_progress');
+
+  let infoHtml = '';
+
+  if (!isAlive) {
+    const lastActiveText = summary.lastActiveAt ? timeAgo(summary.lastActiveAt) : 'unknown';
+    infoHtml += `<div class="mm-info-section" style="background:rgba(255,68,68,0.1);border:1px solid var(--red);padding:8px;margin-bottom:8px">
+      <div style="color:var(--red);font-weight:700;font-size:11px;letter-spacing:2px">OFFLINE</div>
+      <div style="color:var(--dim);font-size:10px;margin-top:2px">Last active: ${escapeHtml(lastActiveText)}</div>
+      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <button onclick="wakeTeamAgent('${escapeAttr(teamName)}','${escapeAttr(agentName)}','resume')" style="background:var(--green);color:#000;border:none;padding:4px 10px;font-family:var(--font);font-size:10px;font-weight:700;cursor:pointer;letter-spacing:1px">RESUME LEAD</button>
+        <button onclick="wakeTeamAgent('${escapeAttr(teamName)}','${escapeAttr(agentName)}','fresh')" style="background:none;border:1px solid var(--amber);color:var(--amber);padding:4px 10px;font-family:var(--font);font-size:10px;font-weight:700;cursor:pointer;letter-spacing:1px">START FRESH</button>
+      </div>
+    </div>`;
+  }
+
+  if (agentType) {
+    infoHtml += `<div class="mm-info-section">
+      <div class="mm-info-label">AGENT TYPE</div>
+      <div class="mm-info-value">${escapeHtml(agentType)}</div>
+    </div>`;
+  }
+
+  infoHtml += `<div class="mm-info-section">
+    <div class="mm-info-label">TASKS</div>
+    <div class="mm-info-value">${activeT.length} active / ${ownedTasks.length} total</div>
+  </div>`;
+
+  if (activeT.length > 0) {
+    infoHtml += `<div class="mm-info-section">
+      <div class="mm-info-label">CURRENT TASK</div>
+      <div class="mm-info-value">${escapeHtml(activeT[0].subject || '(no subject)')}</div>
+      ${activeT[0].activeForm ? `<div class="mm-info-value dim" style="font-style:italic">${escapeHtml(activeT[0].activeForm)}</div>` : ''}
+    </div>`;
+  }
+
+  infoHtml += `<div class="mm-info-section">
+    <div class="mm-info-label">TOKEN USAGE</div>
+    <div class="mm-usage" id="mmUsage">
+      <span class="mm-usage-item"><span class="usage-label">IN:</span> <span class="usage-val" id="mmUsageIn">--</span></span>
+      <span class="mm-usage-item"><span class="usage-label">OUT:</span> <span class="usage-val" id="mmUsageOut">--</span></span>
+    </div>
+  </div>`;
+
+  if (prompt) {
+    infoHtml += `<div class="mm-info-section">
+      <div class="mm-info-label">ROLE PROMPT</div>
+      <div class="mm-prompt-text">${escapeHtml(prompt.substring(0, 2000))}</div>
+    </div>`;
+  }
+
+  sidebar.innerHTML = infoHtml;
+
+  // Show modal
+  document.getElementById('memberModal').classList.add('active');
+
+  // Fetch transcript
+  fetchMemberTranscript();
+
+  // Poll for updates
+  if (memberTranscriptTimer) clearInterval(memberTranscriptTimer);
+  memberTranscriptTimer = setInterval(fetchMemberTranscript, 5000);
+}
+
+function closeMemberModal() {
+  document.getElementById('memberModal').classList.remove('active');
+  memberModalTeam = null;
+  memberModalAgent = null;
+  if (memberTranscriptTimer) {
+    clearInterval(memberTranscriptTimer);
+    memberTranscriptTimer = null;
+  }
+}
+
+async function fetchMemberTranscript() {
+  if (!memberModalTeam || !memberModalAgent) return;
+  try {
+    const res = await fetch(`/api/teams/${encodeURIComponent(memberModalTeam)}/members/${encodeURIComponent(memberModalAgent)}/transcript?tail=50`);
+    const data = await res.json();
+
+    // Update usage
+    if (data.usage) {
+      const inEl = document.getElementById('mmUsageIn');
+      const outEl = document.getElementById('mmUsageOut');
+      if (inEl) inEl.textContent = formatTokens(data.usage.inputTokens);
+      if (outEl) outEl.textContent = formatTokens(data.usage.outputTokens);
+    }
+
+    // Update count
+    const countEl = document.getElementById('mmTranscriptCount');
+    if (countEl) countEl.textContent = `[${data.totalMessages || 0}]`;
+
+    // Render messages
+    const body = document.getElementById('mmTranscriptBody');
+    const wasAtBottom = body.scrollHeight - body.scrollTop - body.clientHeight < 50;
+
+    if (!data.messages || data.messages.length === 0) {
+      body.innerHTML = `<div class="mm-transcript-empty">${data.info || data.error || 'NO CONVERSATION YET'}</div>`;
+    } else {
+      body.innerHTML = data.messages.map(msg => {
+        const roleClass = msg.role || 'user';
+        const roleLabel = msg.role === 'user' ? 'USER' : msg.role === 'assistant' ? 'ASSISTANT' : 'TOOL';
+        let toolsHtml = '';
+        if (msg.toolUse && msg.toolUse.length > 0) {
+          toolsHtml = '<div class="mm-msg-tools">' + msg.toolUse.map(t =>
+            `<div class="mm-msg-tool-item"><span class="tool-name">${escapeHtml(t.name)}</span> ${escapeHtml(t.input)}</div>`
+          ).join('') + '</div>';
+        }
+        const text = msg.text || '';
+        const displayText = text.length > 1000 ? text.substring(0, 1000) + '...' : text;
+        return `<div class="mm-msg ${roleClass}">
+          <div class="mm-msg-role">${roleLabel}</div>
+          <div class="mm-msg-text">${escapeHtml(displayText)}</div>
+          ${toolsHtml}
+        </div>`;
+      }).join('');
+    }
+
+    if (wasAtBottom) body.scrollTop = body.scrollHeight;
+  } catch (e) {
+    console.error('Fetch transcript error:', e);
+  }
+}
+
+async function sendToTeamAgent() {
+  if (!memberModalTeam || !memberModalAgent) return;
+  const input = document.getElementById('mmSendInput');
+  const message = input.value.trim();
+  if (!message) return;
+  input.value = '';
+
+  try {
+    await fetch(`/api/teams/${encodeURIComponent(memberModalTeam)}/members/${encodeURIComponent(memberModalAgent)}/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message }),
+    });
+  } catch (e) {
+    console.error('Send to team agent error:', e);
+  }
+}
+
+async function shutdownTeamAgent() {
+  if (!memberModalTeam || !memberModalAgent) return;
+  if (!confirm(`Send SHUTDOWN request to ${memberModalAgent}?`)) return;
+
+  try {
+    await fetch(`/api/teams/${encodeURIComponent(memberModalTeam)}/members/${encodeURIComponent(memberModalAgent)}/shutdown`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (e) {
+    console.error('Shutdown team agent error:', e);
+  }
+}
+
+async function sendBossMessage(teamName) {
+  const select = document.getElementById('bossTarget');
+  const input = document.getElementById('bossInput');
+  if (!select || !input) return;
+  const target = select.value;
+  const message = input.value.trim();
+  if (!message) return;
+  input.value = '';
+
+  const data = teamsData[teamName];
+  const members = data?.config?.members || [];
+
+  if (target === '__all__') {
+    for (const m of members) {
+      const name = m.name || m.agentId;
+      try {
+        await fetch(`/api/teams/${encodeURIComponent(teamName)}/members/${encodeURIComponent(name)}/send`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message }),
+        });
+      } catch (e) { console.error('Send error:', e); }
+    }
+  } else {
+    try {
+      await fetch(`/api/teams/${encodeURIComponent(teamName)}/members/${encodeURIComponent(target)}/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message }),
+      });
+    } catch (e) { console.error('Send error:', e); }
+  }
+}
+
+function quickBossMessage(teamName, message) {
+  const input = document.getElementById('bossInput');
+  if (input) {
+    input.value = message;
+    sendBossMessage(teamName);
+  }
+}
+
+async function updateTeamTask(teamName, taskId, field, value) {
+  try {
+    const body = {};
+    body[field] = value;
+    await fetch(`/api/teams/${encodeURIComponent(teamName)}/tasks/${encodeURIComponent(taskId)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  } catch (e) {
+    console.error('Update task error:', e);
+  }
+}
+
+function timeAgo(timestamp) {
+  const ms = Date.now() - (typeof timestamp === 'string' ? new Date(timestamp).getTime() : timestamp);
+  if (ms < 60000) return 'just now';
+  if (ms < 3600000) return Math.floor(ms / 60000) + 'm ago';
+  if (ms < 86400000) return Math.floor(ms / 3600000) + 'h ago';
+  return Math.floor(ms / 86400000) + 'd ago';
+}
+
+async function wakeTeamAgent(teamName, agentName, mode) {
+  if (!mode) {
+    // Show choice dialog
+    mode = prompt('Wake mode?\n\n1. resume — Resume lead session (recommended)\n2. fresh — Start fresh agent\n\nType "resume" or "fresh":', 'resume');
+    if (!mode || (mode !== 'resume' && mode !== 'fresh')) return;
+  }
+
+  try {
+    const body = { mode };
+    if (mode === 'fresh') body.targetAgent = agentName;
+
+    const res = await fetch(`/api/teams/${encodeURIComponent(teamName)}/wake`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (data.error) {
+      alert('Wake failed: ' + data.error);
+    } else {
+      alert(`Agent waking up! Session: ${data.sessionName}\nCheck the Agents tab to monitor.`);
+      // Switch to agents view to see the new session
+      if (typeof switchView === 'function') switchView('agents');
+    }
+  } catch (e) {
+    alert('Wake request failed: ' + e.message);
+  }
+}
+
+function formatTokens(n) {
+  if (!n || n === 0) return '0';
+  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+  if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+  return String(n);
+}
+
 // ─── INIT ──────────────────────────────────────────────────────────────
 fetchAgents();
 connectSSE();
 initMobileLayout();
+
+// Close member modal on Escape
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && document.getElementById('memberModal').classList.contains('active')) {
+    closeMemberModal();
+  }
+});
 </script>
 </body>
 </html>
