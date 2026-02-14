@@ -168,3 +168,9 @@ npm start
 - **Windows 支持**（node-pty 替代 tmux）
 - **Agent Team 数据集成**（Team config / Task 状态读取）
 - **交互式操作**（权限确认、计划审批等自动处理）
+
+## 赞赏
+
+如果这个项目对你有帮助，欢迎请作者喝杯咖啡 ☕
+
+<img src="./wechat-pay.jpg" alt="微信赞赏码" width="300">
